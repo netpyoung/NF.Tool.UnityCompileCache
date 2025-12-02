@@ -94,7 +94,7 @@
         <article data-uid="">
 <h1 id="nftoolunitycompilecache">NF.Tool.UnityCompileCache</h1>
 
-<p>This utility has been developed to streamline the execution of cache commands, aiming to reduce the lengthy build times associated with IL2CPP compilation.</p>
+<p>This utility has been developed to streamline the execution of cache commands, aiming to reduce the lengthy build times associated with IL2CPP compilation on Windows.</p>
 <ul>
 <li><a href="https://github.com/netpyoung/NF.Tool.UnityCompileCache/">repo</a></li>
 <li><a href="https://netpyoung.github.io/NF.Tool.UnityCompileCache">doc</a></li>
@@ -103,13 +103,57 @@
 <ul>
 <li><a href="https://github.com/netpyoung/NF.Tool.UnityCompileCache/releases/">releases</a></li>
 </ul>
+<h2 id="prerequirement">Prerequirement</h2>
+<ul>
+<li>Install <a href="https://github.com/ccache/ccache">ccache</a> / <a href="https://github.com/mozilla/sccache">sccache</a></li>
+<li>Adding a directory to the PATH environment variable</li>
+</ul>
 <h2 id="gui">GUI</h2>
-<p><img src="../res/UnityCompileCacheGUI_Winform.webp" alt="UnityCompileCacheGUI_Winform"></p>
+<p><img src="../../res/UnityCompileCacheGUI_Winform.webp" alt="UnityCompileCacheGUI_Winform"></p>
 <p>⚠️ This tool is designed based on C:\Program Files\Unity\Hub and requires administrative privileges to modify Clang files.</p>
+<ul>
+<li>apply: Backs up the original clang.exe as clang.exe.backup, then replaces clang.exe with the custom UnityCompileCache wrapper.</li>
+<li>revert: Removes the wrapper and restores clang.exe.backup back to the original clang.exe.</li>
+</ul>
 <h3 id="require-to-run-gui">Require to run (GUI)</h3>
 <ul>
 <li><a href="https://dotnet.microsoft.com/en-us/download/dotnet/10.0">.NET Desktop Runtime 10.0.x</a></li>
 </ul>
+<h2 id="ref">Ref</h2>
+<ul>
+<li><a href="https://discussions.unity.com/t/optimizing-ios-and-macos-build-times-using-ccache/809570">https://discussions.unity.com/t/optimizing-ios-and-macos-build-times-using-ccache/809570</a></li>
+<li><a href="https://qiita.com/mao_/items/96795c1e734129430310">https://qiita.com/mao_/items/96795c1e734129430310</a></li>
+<li><a href="https://qiita.com/tani-shi/items/e1493e63a02966ef1bac">https://qiita.com/tani-shi/items/e1493e63a02966ef1bac</a></li>
+<li><a href="https://zenn.dev/pobo380/articles/1a5d838ee857e1#%E3%82%A8%E3%83%87%E3%82%A3%E3%82%BF%E6%8B%A1%E5%BC%B5%E3%82%92%E8%BF%BD%E5%8A%A0%E3%81%99%E3%82%8B">https://zenn.dev/pobo380/articles/1a5d838ee857e1#エディタ拡張を追加する</a></li>
+<li><a href="https://qiita.com/Ruw/items/33fe8377559a6600cb89">https://qiita.com/Ruw/items/33fe8377559a6600cb89</a></li>
+</ul>
+<h2 id="log">Log</h2>
+<pre><code class="lang-txt">Unity: Unity6000.0.60f1
+  - Template: Universal 3D
+  - Target: Android
+CPU: AMD Ryzen 5700G
+SSD: SHGP31-2000GM
+
+First Build
+Build completed with a result of 'Succeeded' in 385 seconds (384883 ms)
+UnityEditor.EditorApplication:Internal_CallDelayFunctions ()
+
+Clean Build
+Build completed with a result of 'Succeeded' in 186 seconds (185795 ms)
+UnityEditor.EditorApplication:Internal_CallDelayFunctions ()
+
+Clean Build
+Build completed with a result of 'Succeeded' in 138 seconds (137736 ms)
+UnityEditor.EditorApplication:Internal_CallDelayFunctions ()
+
+Clean Build + Apply ccache
+Build completed with a result of 'Succeeded' in 75 seconds (75499 ms)
+UnityEditor.EditorApplication:Internal_CallDelayFunctions ()
+
+Clean Build + Apply ccache
+Build completed with a result of 'Succeeded' in 74 seconds (74274 ms)
+UnityEditor.EditorApplication:Internal_CallDelayFunctions ()
+</code></pre>
 
 </article>
 

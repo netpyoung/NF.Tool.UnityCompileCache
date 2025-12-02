@@ -41,6 +41,16 @@
       "version": ""
     },
     {
+      "type": "Resource",
+      "source_relative_path": "docs/res/UnityCompileCacheGUI_Winform.webp",
+      "output": {
+        "resource": {
+          "relative_path": "docs/res/UnityCompileCacheGUI_Winform.webp"
+        }
+      },
+      "version": ""
+    },
+    {
       "type": "Toc",
       "source_relative_path": "docs/toc.yml",
       "output": {
@@ -119,16 +129,6 @@
       "output": {
         ".html": {
           "relative_path": "index.html"
-        }
-      },
-      "version": ""
-    },
-    {
-      "type": "Resource",
-      "source_relative_path": "res/UnityCompileCacheGUI_Winform.webp",
-      "output": {
-        "resource": {
-          "relative_path": "res/UnityCompileCacheGUI_Winform.webp"
         }
       },
       "version": ""
