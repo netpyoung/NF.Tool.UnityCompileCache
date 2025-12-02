@@ -1,0 +1,15 @@
+.{
+    .name = .UnityCompileCache_Zig,
+    .version = "0.0.1",
+    .minimum_zig_version = "0.15.2",
+    .fingerprint = 0x1e225e0828e0f9f7,
+
+    .dependencies = .{},
+
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+        "resources",
+    },
+}
