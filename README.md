@@ -2,12 +2,12 @@
 
 This utility has been developed to streamline the execution of cache commands, aiming to reduce the lengthy build times associated with IL2CPP compilation.
 
-- [repo](https://github.com/netpyoung/NF.Tool.UnityPackage/)
+- [repo](https://github.com/netpyoung/NF.Tool.UnityCompileCache/)
 - [doc](https://netpyoung.github.io/NF.Tool.UnityCompileCache)
 
 ## Check Release Page
 
-- [releases](https://github.com/netpyoung/NF.Tool.UnityPackage/releases/)
+- [releases](https://github.com/netpyoung/NF.Tool.UnityCompileCache/releases/)
 
 ## GUI
 
