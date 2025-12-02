@@ -28,7 +28,7 @@
     "resource": [
       {
         "files": [
-          "res/**"
+          "**/res/**"
         ]
       }
     ],

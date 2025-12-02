@@ -1,6 +1,6 @@
 # NF.Tool.UnityCompileCache
 
-This utility has been developed to streamline the execution of cache commands, aiming to reduce the lengthy build times associated with IL2CPP compilation.
+This utility has been developed to streamline the execution of cache commands, aiming to reduce the lengthy build times associated with IL2CPP compilation on Windows.
 
 - [repo](https://github.com/netpyoung/NF.Tool.UnityCompileCache/)
 - [doc](https://netpyoung.github.io/NF.Tool.UnityCompileCache)
@@ -11,7 +11,7 @@ This utility has been developed to streamline the execution of cache commands, a
 
 ## GUI
 
-![UnityCompileCacheGUI_Winform](./docfx/res/UnityCompileCacheGUI_Winform.webp)
+![UnityCompileCacheGUI_Winform](./res/UnityCompileCacheGUI_Winform.webp)
 
 ⚠️ This tool is designed based on C:\Program Files\Unity\Hub and requires administrative privileges to modify Clang files.
 
