@@ -1,0 +1,52 @@
+{
+  "docs/Changelog.html": {
+    "href": "docs/Changelog.html",
+    "title": "Change Log | NF.Tool.UnityCompileCache",
+    "summary": "Change Log 0.0.1 (2025-12-02) Main Features init"
+  },
+  "docs/index.html": {
+    "href": "docs/index.html",
+    "title": "NF.Tool.UnityCompileCache | NF.Tool.UnityCompileCache",
+    "summary": "NF.Tool.UnityCompileCache This utility has been developed to streamline the execution of cache commands, aiming to reduce the lengthy build times associated with IL2CPP compilation. repo doc Check Release Page releases GUI ⚠️ This tool is designed based on C:\\Program Files\\Unity\\Hub and requires administrative privileges to modify Clang files. Require to run (GUI) .NET Desktop Runtime 10.0.x"
+  },
+  "docs/optimize-forum.html": {
+    "href": "docs/optimize-forum.html",
+    "title": "| NF.Tool.UnityCompileCache",
+    "summary": "https://discussions.unity.com/t/optimizing-ios-and-macos-build-times-using-ccache/809570/4 using System.IO; using UnityEditor; #if UNITY_IOS using UnityEditor.iOS.Xcode; #endif using UnityEditor.Callbacks; using UnityEngine; public class PostProcessBuild { #if UNITY_IOS [PostProcessBuild] public static void OnPostProcessBuild(BuildTarget target, string pathToBuiltProject) { // Copy cache-clang script into the project as ccache-clang and ccache-clang++ // Xcode seems to append ++ when linking, so we copy it with both names string ccacheSourcePath = $\"{Application.dataPath}/../Scripts/ccache-clang\"; string ccacheSourceppPath = $\"{Application.dataPath}/../Scripts/ccache-clang++\"; string ccacheDestPath = $\"{pathToBuiltProject}/ccache-clang\"; string ccacheDestppPath = $\"{pathToBuiltProject}/ccache-clang++\"; if (!File.Exists(ccacheDestPath)) File.Copy(ccacheSourcePath, ccacheDestPath); if (!File.Exists(ccacheDestppPath)) File.Copy(ccacheSourceppPath, ccacheDestppPath); // Load up the Xcode project PBXProject pbxProject = new PBXProject(); string projectPath = PBXProject.GetPBXProjectPath(pathToBuiltProject); pbxProject.ReadFromFile(projectPath); // Set CC and CXX values to use ccache-clang script string frameworkGuid = pbxProject.GetUnityFrameworkTargetGuid(); pbxProject.SetBuildProperty(frameworkGuid, \"CC\", \"$(PROJECT_DIR)/ccache-clang\"); pbxProject.SetBuildProperty(frameworkGuid, \"CXX\", \"$(PROJECT_DIR)/ccache-clang\"); File.WriteAllText(projectPath, pbxProject.WriteToString()); } #endif } #!/bin/sh if type -p /usr/local/bin/ccache >/dev/null 2>&1; then export CCACHE_MAXSIZE=10G export CCACHE_CPP2=true export CCACHE_HARDLINK=true export CCACHE_SLOPPINESS=file_macro,time_macros,include_file_mtime,include_file_ctime,file_stat_matches exec /usr/local/bin/ccache /usr/bin/clang++ \"$@\" else exec clang \"$@\" fi #!/bin/sh if type -p /usr/local/bin/ccache >/dev/null 2>&1; then export CCACHE_MAXSIZE=10G export CCACHE_CPP2=true export CCACHE_HARDLINK=true export CCACHE_SLOPPINESS=file_macro,time_macros,include_file_mtime,include_file_ctime,file_stat_matches exec /usr/local/bin/ccache /usr/bin/clang \"$@\" else exec clang \"$@\" fi // xcode // // this may not necessary for incremental build // Xcode → Preference → Locations → Derived Data → Change to “Relative” // // // export CCACHE_SLOPPINESS=pch_defines,file_macro,time_macros,include_file_mtime,include_file_ctime PostProcessBuild.cs proj.SetBuildProperty(frameworkTarget, “CC”, “$(SRCROOT)/ccache-clang.sh”); proj.SetBuildProperty(frameworkTarget, “CLANG_ENABLE_MODULES”, “NO”); proj.SetBuildProperty(frameworkTarget, “GCC_PRECOMPILE_PREFIX_HEADER”, “NO”); // will make the first build much more slower，may not necessary for incremental build"
+  },
+  "docs/with_cache.html": {
+    "href": "docs/with_cache.html",
+    "title": "With Cache | NF.Tool.UnityCompileCache",
+    "summary": "With Cache support ccache sccache Etc https://gitlab.com/bits-n-bites/buildcache"
+  },
+  "docs/with_ccache/ccache.html": {
+    "href": "docs/with_ccache/ccache.html",
+    "title": "ccache | NF.Tool.UnityCompileCache",
+    "summary": "ccache https://github.com/ccache/ccache https://ccache.dev/ https://ccache.dev/documentation.html https://ccache.dev/manual/latest.html#_location_of_the_configuration_file https://ccache.dev/manual/latest.html#_configuration_options https://ccache.dev/manual/latest.html#_using_ccache_with_other_compiler_wrappers config %LOCALAPPDATA%\\ccache\\ccache.conf Command ccache --show-stats"
+  },
+  "docs/with_distcc/distcc.html": {
+    "href": "docs/with_distcc/distcc.html",
+    "title": "distcc | NF.Tool.UnityCompileCache",
+    "summary": "distcc https://www.distcc.org/ https://github.com/distcc/distcc https://github.com/distcc/distcc/blob/master/INSTALL Etc https://github.com/VKCOM/nocc"
+  },
+  "docs/with_redis/garnet.html": {
+    "href": "docs/with_redis/garnet.html",
+    "title": "garnet | NF.Tool.UnityCompileCache",
+    "summary": "garnet https://github.com/microsoft/garnet https://microsoft.github.io/garnet/ https://microsoft.github.io/garnet/docs/getting-started/configuration // .\\GarnetServer.exe --config-import-path .\\garnet.conf { \"CheckpointDir\": \"__CheckpointDir\", \"EnableAOF\": true, \"Recover\": true, }"
+  },
+  "docs/with_redis/redis.html": {
+    "href": "docs/with_redis/redis.html",
+    "title": "redis | NF.Tool.UnityCompileCache",
+    "summary": "redis client vscode redis insight from microsoft store RESP(REdis Serialization Protocol) https://redis.io/docs/latest/develop/reference/protocol-spec/ redis https://github.com/redis/redis Valkey https://github.com/valkey-io/valkey dragonfly https://github.com/dragonflydb/dragonfly KeyDB https://github.com/Snapchat/KeyDB garnet https://github.com/microsoft/garnet SugarDB https://github.com/EchoVault/SugarDB https://microsoft.github.io/garnet/docs/benchmarking/results-resp-bench"
+  },
+  "docs/with_sccache/sccache.html": {
+    "href": "docs/with_sccache/sccache.html",
+    "title": "sccache | NF.Tool.UnityCompileCache",
+    "summary": "sccache https://github.com/mozilla/sccache https://github.com/mozilla/sccache/releases/ Architecture.md Caching.md Configuration.md Configuration.md#misc Xcode.md config file path Windows %APPDATA%\\Mozilla\\sccache\\config\\config macOS ~/Library/Application Support/Mozilla.sccache/config Linux ~/.config/sccache/config %APPDATA%\\Mozilla\\sccache\\config\\config C:\\Users{uername}\\AppData\\Roaming\\Mozilla\\sccache\\config\\config [cache.redis] url = \"redis://127.0.0.1:6379\" > sscache --show-stats Compile requests 847 Compile requests executed 847 Cache hits 846 Cache hits (C/C++) 846 Cache misses 1 Cache misses (C/C++) 1 Cache hits rate 99.88 % Cache hits rate (C/C++) 99.88 % ..."
+  },
+  "index.html": {
+    "href": "index.html",
+    "title": "",
+    "summary": ""
+  }
+}

@@ -1,1 +1,0 @@
-[!include[Default](~/../README.md)]

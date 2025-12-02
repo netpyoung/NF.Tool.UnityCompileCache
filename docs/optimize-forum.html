@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title> | NF.Tool.UnityCompileCache </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content=" | NF.Tool.UnityCompileCache ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/netpyoung/NF.Tool.UnityCompileCache/blob/main/docfx/docs/optimize-forum.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-855BJNV9VD"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-855BJNV9VD');
+      </script>
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="NF.Tool.UnityCompileCache">
+            NF.Tool.UnityCompileCache
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+
+<ul>
+<li><a href="https://discussions.unity.com/t/optimizing-ios-and-macos-build-times-using-ccache/809570/4">https://discussions.unity.com/t/optimizing-ios-and-macos-build-times-using-ccache/809570/4</a></li>
+</ul>
+<pre><code class="lang-cs">using System.IO;
+using UnityEditor;
+#if UNITY_IOS
+using UnityEditor.iOS.Xcode;
+#endif
+using UnityEditor.Callbacks;
+using UnityEngine;
+
+public class PostProcessBuild
+{
+#if UNITY_IOS
+    [PostProcessBuild]
+    public static void OnPostProcessBuild(BuildTarget target, string pathToBuiltProject)
+    {
+        // Copy cache-clang script into the project as ccache-clang and ccache-clang++
+        // Xcode seems to append ++ when linking, so we copy it with both names
+        string ccacheSourcePath = $&quot;{Application.dataPath}/../Scripts/ccache-clang&quot;;
+        string ccacheSourceppPath = $&quot;{Application.dataPath}/../Scripts/ccache-clang++&quot;;
+        string ccacheDestPath = $&quot;{pathToBuiltProject}/ccache-clang&quot;;
+        string ccacheDestppPath = $&quot;{pathToBuiltProject}/ccache-clang++&quot;;
+
+        if (!File.Exists(ccacheDestPath))
+            File.Copy(ccacheSourcePath, ccacheDestPath);
+        if (!File.Exists(ccacheDestppPath))
+            File.Copy(ccacheSourceppPath, ccacheDestppPath);
+
+        // Load up the Xcode project
+        PBXProject pbxProject = new PBXProject();
+        string projectPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
+        pbxProject.ReadFromFile(projectPath);
+
+        // Set CC and CXX values to use ccache-clang script
+        string frameworkGuid = pbxProject.GetUnityFrameworkTargetGuid();
+        pbxProject.SetBuildProperty(frameworkGuid, &quot;CC&quot;, &quot;$(PROJECT_DIR)/ccache-clang&quot;);
+        pbxProject.SetBuildProperty(frameworkGuid, &quot;CXX&quot;, &quot;$(PROJECT_DIR)/ccache-clang&quot;);
+
+        File.WriteAllText(projectPath, pbxProject.WriteToString());
+    }
+#endif
+}
+</code></pre>
+<pre><code class="lang-sh">#!/bin/sh
+if type -p /usr/local/bin/ccache &gt;/dev/null 2&gt;&amp;1; then
+  export CCACHE_MAXSIZE=10G
+  export CCACHE_CPP2=true
+  export CCACHE_HARDLINK=true
+  export CCACHE_SLOPPINESS=file_macro,time_macros,include_file_mtime,include_file_ctime,file_stat_matches
+  exec /usr/local/bin/ccache /usr/bin/clang++ &quot;$@&quot;
+else
+  exec clang &quot;$@&quot;
+fi
+
+
+#!/bin/sh
+if type -p /usr/local/bin/ccache &gt;/dev/null 2&gt;&amp;1; then
+  export CCACHE_MAXSIZE=10G
+  export CCACHE_CPP2=true
+  export CCACHE_HARDLINK=true
+  export CCACHE_SLOPPINESS=file_macro,time_macros,include_file_mtime,include_file_ctime,file_stat_matches
+  exec /usr/local/bin/ccache /usr/bin/clang &quot;$@&quot;
+else
+  exec clang &quot;$@&quot;
+fi
+</code></pre>
+<hr>
+<pre><code class="lang-cs">// xcode
+// // this may not necessary for incremental build
+// Xcode → Preference → Locations → Derived Data → Change to “Relative”
+// 
+// 
+// export CCACHE_SLOPPINESS=pch_defines,file_macro,time_macros,include_file_mtime,include_file_ctime
+
+PostProcessBuild.cs
+proj.SetBuildProperty(frameworkTarget, “CC”, “$(SRCROOT)/ccache-clang.sh”);
+proj.SetBuildProperty(frameworkTarget, “CLANG_ENABLE_MODULES”, “NO”);
+proj.SetBuildProperty(frameworkTarget, “GCC_PRECOMPILE_PREFIX_HEADER”, “NO”); // will make the first build much more slower，may not necessary for incremental build
+</code></pre>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/netpyoung/NF.Tool.UnityCompileCache/blob/main/docfx/docs/optimize-forum.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

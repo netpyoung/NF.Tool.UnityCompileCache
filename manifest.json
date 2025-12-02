@@ -1,0 +1,155 @@
+{
+  "source_base_path": "/home/runner/work/NF.Tool.UnityCompileCache/NF.Tool.UnityCompileCache/docfx",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/Changelog.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/Changelog.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/optimize-forum.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/optimize-forum.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docs/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "docs/toc.html"
+        },
+        ".json": {
+          "relative_path": "docs/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/with_cache.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/with_cache.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/with_ccache/ccache.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/with_ccache/ccache.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/with_distcc/distcc.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/with_distcc/distcc.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/with_redis/garnet.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/with_redis/garnet.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/with_redis/redis.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/with_redis/redis.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "docs/with_sccache/sccache.md",
+      "output": {
+        ".html": {
+          "relative_path": "docs/with_sccache/sccache.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Redirection",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "res/UnityCompileCacheGUI_Winform.webp",
+      "output": {
+        "resource": {
+          "relative_path": "res/UnityCompileCacheGUI_Winform.webp"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
