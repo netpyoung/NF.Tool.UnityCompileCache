@@ -9,11 +9,19 @@ This utility has been developed to streamline the execution of cache commands, a
 
 - [releases](https://github.com/netpyoung/NF.Tool.UnityCompileCache/releases/)
 
+## Prerequirement
+
+- Install [ccache](https://github.com/ccache/ccache) / [sccache](https://github.com/mozilla/sccache)
+- Adding a directory to the PATH environment variable
+
 ## GUI
 
 ![UnityCompileCacheGUI_Winform](./res/UnityCompileCacheGUI_Winform.webp)
 
 ⚠️ This tool is designed based on C:\Program Files\Unity\Hub and requires administrative privileges to modify Clang files.
+
+- apply: Backs up the original clang.exe as clang.exe.backup, then replaces clang.exe with the custom UnityCompileCache wrapper.
+- revert: Removes the wrapper and restores clang.exe.backup back to the original clang.exe.
 
 ### Require to run (GUI)
 
