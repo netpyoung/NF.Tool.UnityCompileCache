@@ -1,0 +1,138 @@
+name: 🚀🏷️ Release with Tag
+
+on:
+  push:
+    tags:
+      - '*'
+#    branches:
+#      - main
+
+jobs:
+  upload_assets_for_windows:
+    name: 🪟📦️ Upload Assets
+    runs-on: windows-latest
+    steps:
+      # https://github.com/actions/checkout
+      - name: checkout
+        uses: actions/checkout@v5
+
+      # https://codeberg.org/mlugg/setup-zig/
+      - name: setup zig
+        uses: mlugg/setup-zig@v2
+        with:
+          version: 0.15.2
+
+      # https://github.com/actions/cache
+      - name: Cache Zig build
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/zig
+          key: zig-${{ runner.os }}-${{ hashFiles('**/*.zig') }}
+          restore-keys: |
+            zig-${{ runner.os }}-
+
+      # https://github.com/actions/setup-dotnet
+      - name: setup dotnet
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+
+      # https://github.com/actions/cache
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
+
+      - name: Build
+        shell: pwsh
+        run: |
+          .\ps_build.ps1
+
+      - name: 📦️⏫ Upload Artifact - UnityCompileCacheGUI_Winform
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact-windows-gui
+          path: NF.Tool.UnityCompileCache/UnityCompileCacheGUI_Winform/publish/UnityCompileCacheGUI_Winform.exe
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+
+      - name: 📦️⏫ Upload Artifact - UnityCompileCache_ccache
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact-cache-ccache
+          path: UnityCompileCache_Zig/UnityCompileCache_Zig/zig-out/bin/UnityCompileCache_ccache.exe
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+
+      - name: 📦️⏫ Upload Artifact - UnityCompileCache_sccache
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact-cache-sccache
+          path: UnityCompileCache_Zig/UnityCompileCache_Zig/zig-out/bin/UnityCompileCache_sccache.exe
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+
+
+  ## ======================================================================================================
+  release:
+    needs: [upload_assets_for_windows]
+    name: 🚀 Release
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/actions/checkout
+      - name: checkout
+        uses: actions/checkout@v5
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            CHANGELOG.md
+
+      - name: Make Directory For Download Artifacts
+        run: |
+          mkdir -p download-artifacts
+
+      # https://github.com/actions/download-artifact
+      - name: 📦️⏬ Download Artifact
+        uses: actions/download-artifact@v5
+        with:
+          path: download-artifacts
+
+      - name: Log artifact download
+        run: |
+          ls -alh
+          ls -alh download-artifacts
+
+      - name: Get Tagname
+        id: tag_name
+        run: |
+          echo "current_version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        shell: bash
+
+      # https://github.com/mindsers/changelog-reader-action
+      - name: Changelog Reader
+        id: changelog_reader
+        uses: mindsers/changelog-reader-action@v2
+        with:
+          version: ${{ steps.tag_name.outputs.current_version }}
+          path: ./CHANGELOG.md
+
+      # https://github.com/softprops/action-gh-release
+      - name: 🚀 Release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          prerelease: false
+          name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref }}
+          body: ${{ steps.changelog_reader.outputs.changes }}
+          fail_on_unmatched_files: true
+          files: |
+            ./download-artifacts/artifact-windows-gui/UnityCompileCacheGUI_Winform.exe
+            ./download-artifacts/artifact-cache-ccache/UnityCompileCache_ccache.exe
+            ./download-artifacts/artifact-cache-sccache/UnityCompileCache_sccache.exe

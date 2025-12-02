@@ -33,6 +33,8 @@ This utility has been developed to streamline the execution of cache commands, a
 
 ``` txt
 Unity: Unity6000.0.60f1
+  - Template: Universal 3D
+  - Target: Android
 CPU: AMD Ryzen 5700G
 SSD: SHGP31-2000GM
 
