@@ -1,0 +1,21 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Diagnostics.FileVersionInfo" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Diagnostics" #>
+<#
+    string root = Path.GetDirectoryName(Host.TemplateFile);
+    string dir = @"..\..\UnityCompileCache_Zig\UnityCompileCache_Zig\zig-out\bin\";
+    string ccache_Path = Path.Combine(root, dir, "UnityCompileCache_ccache.exe");
+    string ccache_Ver = FileVersionInfo.GetVersionInfo(ccache_Path).ProductVersion;
+    string sccache_Path = Path.Combine(root, dir, "UnityCompileCache_sccache.exe");
+    string sccache_Ver = FileVersionInfo.GetVersionInfo(sccache_Path).ProductVersion;
+#>
+namespace EmbeddedInfo
+{
+    internal static class EmbeddedFile
+    {
+        public const string ProductVersion_ccache = "<#= ccache_Ver #>";
+        public const string ProductVersion_sccache = "<#= sccache_Ver #>";
+    }
+}
