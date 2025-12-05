@@ -156,13 +156,19 @@ fn Call_Cache(allocator: std.mem.Allocator, fullArgs: [][:0]u8) !u8 {
     return @intCast(exit_code);
 }
 
-fn Contains(haystack: []const u8, needle: u8) bool {
+inline fn Contains(haystack: []const u8, needle: u8) bool {
     return std.mem.indexOfScalar(u8, haystack, needle) != null;
 }
 
-fn HasCompileArgs(args: [][:0]u8) bool {
+inline fn HasCompileArgs(args: [][:0]u8) bool {
     for (args) |arg| {
+        // for clang.exe, clang++.exe
         if (std.mem.eql(u8, arg, "-c")) {
+            return true;
+        }
+
+        // for clang-cl.exe
+        if (std.mem.eql(u8, arg, "/c")) {
             return true;
         }
     }
